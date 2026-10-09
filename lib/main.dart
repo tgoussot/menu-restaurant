@@ -45,8 +45,56 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String _categorieSelectionnee = 'Toute la carte';
+
+  List<Widget> _boutonsCategories() {
+    List<Widget> boutons = [];
+    for (String categorie in categories) {
+      boutons.add(
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              _categorieSelectionnee = categorie;
+            });
+          },
+          child: Container(
+            margin: const EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+            color: categorie == _categorieSelectionnee
+                ? Colors.deepPurple
+                : Colors.white,
+            child: Text(
+              categorie,
+              style: TextStyle(
+                color: categorie == _categorieSelectionnee
+                    ? Colors.white
+                    : Colors.black,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+    return boutons;
+  }
+
+  List<Plat> _platsDeLaCategorie() {
+    if (_categorieSelectionnee == 'Toute la carte') {
+      return plats;
+    }
+    List<Plat> resultat = [];
+    for (Plat plat in plats) {
+      if (plat.categorie == _categorieSelectionnee) {
+        resultat.add(plat);
+      }
+    }
+    return resultat;
+  }
+
   @override
   Widget build(BuildContext context) {
+    List<Plat> platsAffiches = _platsDeLaCategorie();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -55,18 +103,26 @@ class _MyHomePageState extends State<MyHomePage> {
       // Column : on empile verticalement la zone des catégories puis celle des plats
       body: Column(
         children: [
-          // Hauteur fixe car cette zone accueillera une liste horizontale de catégories
+          // Hauteur fixe : la barre garde la même taille en portrait et en paysage, le reste de l'écran va aux plats
           Container(
             height: 60,
-            color: Colors.grey.shade200,
+            padding: const EdgeInsets.symmetric(vertical: 10),
+            // SingleChildScrollView horizontal : les catégories peuvent dépasser la largeur de l'écran, surtout en portrait
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              // Row : les catégories sont alignées sur une seule ligne, comme des onglets
+              child: Row(
+                children: _boutonsCategories(),
+              ),
+            ),
           ),
           // Expanded : la zone des plats prend toute la hauteur restante pour que la liste verticale défile dedans
           Expanded(
             // ListView.builder : les cartes sont créées seulement quand elles s'affichent, adapté à une liste de plats qui peut grandir
             child: ListView.builder(
-              itemCount: plats.length,
+              itemCount: platsAffiches.length,
               itemBuilder: (context, index) {
-                return CartePlat(plat: plats[index]);
+                return CartePlat(plat: platsAffiches[index]);
               },
             ),
           ),
@@ -141,6 +197,7 @@ class Plat {
 }
 
 const List<String> categories = [
+  'Toute la carte',
   'Formules',
   'Entrées',
   'Plats',
