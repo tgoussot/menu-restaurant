@@ -60,10 +60,14 @@ class _MyHomePageState extends State<MyHomePage> {
             height: 60,
             color: Colors.grey.shade200,
           ),
-          // Expanded : la zone des plats prend toute la hauteur restante, nécessaire pour y placer une liste verticale
+          // Expanded : la zone des plats prend toute la hauteur restante pour que la liste verticale défile dedans
           Expanded(
-            child: Container(
-              color: Colors.white,
+            // ListView.builder : les cartes sont créées seulement quand elles s'affichent, adapté à une liste de plats qui peut grandir
+            child: ListView.builder(
+              itemCount: plats.length,
+              itemBuilder: (context, index) {
+                return CartePlat(plat: plats[index]);
+              },
             ),
           ),
         ],
@@ -72,10 +76,64 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+class CartePlat extends StatelessWidget {
+  const CartePlat({super.key, required this.plat});
+
+  final Plat plat;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Image.asset(
+              plat.image,
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
+            const SizedBox(width: 12),
+            // Expanded : les textes prennent la largeur restante et passent à la ligne au lieu de déborder
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    plat.nom,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(plat.description),
+                  const SizedBox(height: 8),
+                  Text(
+                    plat.prix,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.deepPurple,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class Plat {
   final String nom;
   final String categorie;
-  final double prix;
+  final String prix;
   final String description;
   final String image;
 
@@ -94,168 +152,168 @@ const List<Plat> plats = [
   Plat(
     'Formule Burger',
     'Formules',
-    14.9,
-    'Burger au choix accompagné de frites fraîches (supplément frites de patate douce +0,50 €).',
+    '14,90 €',
+    'Burger au choix et frites fraîches.',
     'assets/images/formule_burger.jpg',
   ),
   Plat(
     'Menu Nuggets',
     'Formules',
-    12.5,
-    '6 nuggets de poulet maison, 1 sauce maison au choix et un accompagnement.',
+    '12,50 €',
+    '6 nuggets maison, une sauce et un accompagnement.',
     'assets/images/menu_nuggets.jpg',
   ),
   Plat(
     'Menu Kids (1-12 ans)',
     'Formules',
-    6.5,
-    'Burger Essentiel au choix ou 3 nuggets, sauce au choix, accompagné de frites.',
+    '6,50 €',
+    'Petit burger ou 3 nuggets, avec des frites.',
     'assets/images/menu_kids.jpg',
   ),
   Plat(
     'Nuggets de poulet maison x4',
     'Entrées',
-    5.0,
-    'Nuggets de poulet maison, servis avec une sauce maison au choix.',
+    '5,00 €',
+    'Nuggets de poulet maison et sauce au choix.',
     'assets/images/nuggets_poulet_maison.jpg',
   ),
   Plat(
     "Cromesquis d'Époisses Gaugry x4",
     'Entrées',
-    4.0,
-    "Bouchées panées au cœur fondant d'Époisses de la fromagerie Gaugry.",
+    '4,00 €',
+    "Bouchées panées au cœur fondant d'Époisses.",
     'assets/images/cromesquis_epoisses.jpg',
   ),
   Plat(
     'Big stick de Morbier AOP x2',
     'Entrées',
-    3.5,
-    'Sticks de Morbier AOP panés, cœur fondant et panure croustillante.',
+    '3,50 €',
+    'Sticks de Morbier panés au cœur fondant.',
     'assets/images/stick_morbier.jpg',
   ),
   Plat(
     'Petite salade',
     'Entrées',
-    4.0,
-    'Sucrine, pickles de légumes, croûtons, crème balsamique et vinaigrette.',
+    '4,00 €',
+    'Sucrine, pickles de légumes et croûtons.',
     'assets/images/petite_salade.jpg',
   ),
   Plat(
     'Frites fraîches',
     'Entrées',
-    4.0,
-    "Frites fraîches dorées ; gratinées à l'Époisses (+3 €) ou au cheddar maison (+2 €) en option.",
+    '4,00 €',
+    'Frites fraîches maison, bien dorées.',
     'assets/images/frites_fraiches.jpg',
   ),
   Plat(
     'Frites de patate douce',
     'Entrées',
-    4.5,
-    'Frites de patate douce dorées, coupées en bâtonnets.',
+    '4,50 €',
+    'Frites de patate douce dorées.',
     'assets/images/frites_patate_douce.jpg',
   ),
   Plat(
     'Burger Foodies',
     'Plats',
-    10.9,
-    "Bœuf de Bourgogne 140 g, bacon jam, double cheddar affiné, sauce BBQ au Jack Daniel's, pickles, beignet d'oignon.",
+    '10,90 €',
+    'Bœuf de Bourgogne, double cheddar, sauce BBQ.',
     'assets/images/burger_foodies.jpg',
   ),
   Plat(
     'Burger Burgundy',
     'Plats',
-    10.9,
-    "Bœuf de Bourgogne 140 g, bacon jam, sauce bourguignonne, cromesquis d'Époisses Gaugry, compotée d'oignons au vin rouge.",
+    '10,90 €',
+    "Bœuf de Bourgogne, cromesquis d'Époisses, oignons au vin.",
     'assets/images/burger_burgundy.jpg',
   ),
   Plat(
     'Korean Burger',
     'Plats',
-    10.9,
-    'Poulet mariné croustillant, sauce spicy cacahuète, kimchi maison, cheddar affiné, feuille de shiso.',
+    '10,90 €',
+    'Poulet croustillant, kimchi maison, sauce cacahuète.',
     'assets/images/korean_burger.jpg',
   ),
   Plat(
     'Poutine Bourguignonne',
     'Plats',
-    11.5,
-    'Frites fraîches, effiloché de bœuf à la bourguignonne, oignons confits au vin rouge, Époisses Gaugry gratiné.',
+    '11,50 €',
+    'Frites, bœuf bourguignon effiloché, Époisses gratiné.',
     'assets/images/poutine_bourguignonne.jpg',
   ),
   Plat(
     'Poutine Gaston Gérard',
     'Plats',
-    11.5,
-    "Frites fraîches, poulet mariné à la moutarde à l'ancienne, sauce crémeuse façon Gaston Gérard, Comté AOP gratiné.",
+    '11,50 €',
+    'Frites, poulet à la moutarde, Comté AOP gratiné.',
     'assets/images/poutine_gaston_gerard.jpg',
   ),
   Plat(
     'Salade La Jondi',
     'Plats',
-    10.5,
-    'Cœur de sucrine, aiguillettes de poulet croustillantes, bacon jam, copeaux de Comté AOP, croûtons, crème balsamique.',
+    '10,50 €',
+    'Sucrine, poulet croustillant, Comté AOP, croûtons.',
     'assets/images/salade_la_jondi.jpg',
   ),
   Plat(
     'Brookies',
     'Desserts',
-    5.5,
-    'Cookie au cœur de brownie fondant, praliné noisette, amandes et noisettes caramélisées.',
+    '5,50 €',
+    'Cookie au cœur de brownie fondant.',
     'assets/images/brookies.jpg',
   ),
   Plat(
     'Verrine pâte à tartiner maison',
     'Desserts',
-    5.5,
-    'Pâte à tartiner maison, biscuit et mousse mascarpone vanille.',
+    '5,50 €',
+    'Pâte à tartiner maison et mousse mascarpone.',
     'assets/images/verrine_pate_a_tartiner.jpg',
   ),
   Plat(
     'Verrine façon Paris-Brest',
     'Desserts',
-    5.5,
-    'Pâte à tartiner maison, mousse praliné et choux Paris-Brest.',
+    '5,50 €',
+    'Mousse praliné et choux façon Paris-Brest.',
     'assets/images/verrine_paris_brest.jpg',
   ),
   Plat(
     'Verrine chocolat caramel',
     'Desserts',
-    5.5,
-    'Mousse au chocolat, caramel au beurre salé et pépites de brownie.',
+    '5,50 €',
+    'Mousse au chocolat et caramel beurre salé.',
     'assets/images/verrine_chocolat_caramel.jpg',
   ),
   Plat(
     'Pepsi 50 cl',
     'Boissons',
-    3.8,
+    '3,80 €',
     'Bouteille de 50 cl.',
     'assets/images/pepsi.jpg',
   ),
   Plat(
     'Ice Tea 50 cl',
     'Boissons',
-    3.8,
+    '3,80 €',
     'Bouteille de 50 cl.',
     'assets/images/ice_tea.jpg',
   ),
   Plat(
     'Bière Foodies IPA',
     'Boissons',
-    4.9,
-    "Bière blonde aux notes d'agrumes et de fruits exotiques.",
+    '4,90 €',
+    "Bière blonde aux notes d'agrumes.",
     'assets/images/biere_foodies_ipa.jpg',
   ),
   Plat(
     'Badoit 50 cl',
     'Boissons',
-    3.0,
+    '3,00 €',
     'Eau gazeuse, bouteille de 50 cl.',
     'assets/images/badoit.jpg',
   ),
   Plat(
     'Evian 50 cl',
     'Boissons',
-    2.0,
+    '2,00 €',
     'Eau minérale, bouteille de 50 cl.',
     'assets/images/evian.jpg',
   ),
