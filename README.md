@@ -1,17 +1,11 @@
-# menu_restaurant
+# Menu du Restaurant Foodies
 
-A new Flutter project.
+Une petite application Flutter qui reprend la carte du restaurant Dijonnais Foodies (à mes yeux le meilleur restaurant au monde, bien meilleur que vos bouchons Lyonnais 😂)
 
-## Getting Started
+On choisit une catégorie dans la barre en haut (formules, entrées, plats, desserts, boissons, ou toute la carte d'un coup) et les plats correspondants s'affichent en dessous, chacun avec sa photo, une courte description et son prix.
 
-This project is a starting point for a Flutter application.
+L'application fonctionne en portrait comme en paysage : en paysage, les images rétrécissent pour qu'on voie plus de plats à l'écran.
 
-A few resources to get you started if this is your first Flutter project:
+![Portrait](captures/portrait.jpg)
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Paysage](captures/paysage.jpg)
