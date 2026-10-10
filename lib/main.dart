@@ -62,13 +62,16 @@ class _MyHomePageState extends State<MyHomePage> {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             color: categorie == _categorieSelectionnee
                 ? Colors.deepPurple
-                : Colors.white,
+                : Colors.deepPurple.shade50,
             child: Text(
               categorie,
               style: TextStyle(
                 color: categorie == _categorieSelectionnee
                     ? Colors.white
-                    : Colors.black,
+                    : Colors.deepPurple,
+                fontWeight: categorie == _categorieSelectionnee
+                    ? FontWeight.bold
+                    : FontWeight.normal,
               ),
             ),
           ),
@@ -139,6 +142,8 @@ class CartePlat extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double tailleImage = MediaQuery.of(context).size.height / 7;
+
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Padding(
@@ -148,8 +153,8 @@ class CartePlat extends StatelessWidget {
           children: [
             Image.asset(
               plat.image,
-              width: 100,
-              height: 100,
+              width: tailleImage,
+              height: tailleImage,
               fit: BoxFit.cover,
             ),
             const SizedBox(width: 12),
